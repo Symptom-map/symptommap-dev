@@ -1923,14 +1923,17 @@ canvas { position: absolute; top: 0; left: 0; cursor: default; }
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════
 const DIAGNOSES = [
-  { id:'tda',   label:'TDA\nTDAH',             color:'#c0622a' },
-  { id:'tlp',   label:'TLP\nBorderline',        color:'#3d7ab8' },
-  { id:'an',    label:'Anorexia\nNerviosa',     color:'#e05c3a' },
-  { id:'aut',   label:'Rasgos\nAutistas',       color:'#1aabb0' },
-  { id:'cptsd', label:'C-PTSD',                 color:'#7c6ab0' },
-  { id:'bi',    label:'Trastorno\nBipolar',     color:'#d4953a' },
-  { id:'anx',   label:'Ansiedad\nGeneralizada', color:'#6aaa4a' },
+  { id:'tda',   label:'TDA\nTDAH',             labelEn:'ADHD',                  color:'#c0622a' },
+  { id:'tlp',   label:'TLP\nBorderline',        labelEn:'BPD\nBorderline',       color:'#3d7ab8' },
+  { id:'an',    label:'Anorexia\nNerviosa',     labelEn:'Anorexia\nNervosa',     color:'#e05c3a' },
+  { id:'aut',   label:'Autistic\nTraits',       labelEn:'Autistic\nTraits',      color:'#1aabb0' },
+  { id:'cptsd', label:'C-PTSD',                 labelEn:'C-PTSD',                color:'#7c6ab0' },
+  { id:'bi',    label:'Bipolar\nDisorder',      labelEn:'Bipolar\nDisorder',     color:'#d4953a' },
+  { id:'anx',   label:'Ansiedad\nGeneralizada', labelEn:'Generalized\nAnxiety',  color:'#6aaa4a' },
 ];
+
+// Helper: label según idioma activo
+function diagLabel(d) { return (lang === 'en' && d.labelEn) ? d.labelEn : d.label; }
 
 const DIAG_MAP = Object.fromEntries(DIAGNOSES.map(d => [d.id, d]));
 const HUB_R  = 46;
@@ -2028,7 +2031,7 @@ function draw() {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.font = '14px Poppins, sans-serif';
-    ctx.fillText('Selecciona tus diagnósticos y genera síntomas →', W/2, H/2);
+    ctx.fillText(lang==='es'?'Selecciona tus diagnósticos y genera síntomas →':'Select your diagnoses and generate symptoms →', W/2, H/2);
     return;
   }
 
@@ -2485,7 +2488,7 @@ canvas.addEventListener('touchend',()=>{dragging=false;dragNodeId=null;saveState
 // ═══════════════════════════════════════════════════════════
 const tooltip = document.getElementById('tooltip');
 function showTooltip(n, cx, cy) {
-  const tags = n.conds.map(c=>DIAG_MAP[c]?.label.replace('\n',' ')||c).join(' · ');
+  const tags = n.conds.map(c=>diagLabel(DIAG_MAP[c]||{label:c}).replace('\n',' ')).join(' · ');
   tooltip.textContent = n.name + (tags ? `  —  ${tags}` : '') + '  ·  doble click para abrir';
   tooltip.style.left = (cx+12)+'px'; tooltip.style.top = (cy-10)+'px';
   tooltip.classList.add('show');
@@ -2564,7 +2567,7 @@ async function analyzeMulti() {
   if (nodes.length < 2) return;
   const isEs = lang === 'es';
   showLoading(isEs ? 'Analizando intersección...' : 'Analyzing intersection...');
-  const diagLabels = state.selectedDiags.map(d=>DIAG_MAP[d]?.label.replace('\n',' ')||d).join(', ');
+  const diagLabels = state.selectedDiags.map(d=>diagLabel(DIAG_MAP[d]||{label:d}).replace('\n',' ')).join(', ');
   const nodeDescriptions = nodes.map(n =>
     `"${n.name}" (${n.conds.map(c=>DIAG_MAP[c]?.label.replace('\n',' ')||c).join(', ')||'unknown origin'})`
   ).join(', ');
@@ -2609,7 +2612,7 @@ function saveNote() {
     n.notes   = document.getElementById('rp-notes').value;
     n.context = document.getElementById('rp-context').value;
   }
-  saveState(); draw(); showToast('Guardado');
+  saveState(); draw(); showToast(lang==='es'?'Guardado':'Saved');
 }
 
 function promoteToMain() {
@@ -2908,7 +2911,7 @@ function renderDiagList() {
       <div style="display:flex;align-items:center;gap:9px;flex:1" onclick="toggleDiag('${d.id}')">
         <div class="diag-swatch" style="background:${d.color}${active?'':'44'}"></div>
         <span class="diag-name" style="${active?`color:${d.color}`:''}">
-          ${d.label.replace('\n',' ')}
+          ${diagLabel(d).replace('\n',' ')}
         </span>
       </div>
       ${active ? `
@@ -2957,7 +2960,7 @@ function toggleDiag(id) {
   state.selectedDiags.forEach(d => {
     if (!state.nodes.find(n=>n.id==='hub-'+d)) {
       const diag = DIAG_MAP[d];
-      state.nodes.push({ id:'hub-'+d, name:diag.label, label:diag.label, conds:[d], hub:true, x:0, y:0, _placed:false });
+      state.nodes.push({ id:'hub-'+d, name:diagLabel(diag), label:diagLabel(diag), conds:[d], hub:true, x:0, y:0, _placed:false });
     }
   });
   initLayout(); saveState(); renderDiagList(); renderNodeList(); draw();
@@ -2981,7 +2984,7 @@ function renderAddChecks() {
 // ═══════════════════════════════════════════════════════════
 function addNodeManual() {
   const name = document.getElementById('inp-name').value.trim();
-  if (!name) { showToast('Escribe el nombre del síntoma'); return; }
+  if (!name) { showToast(lang==='es'?'Escribe el nombre del síntoma':'Enter a symptom name'); return; }
   const conds = [...document.querySelectorAll('#add-checks input:checked')].map(c=>c.value);
   const context = document.getElementById('inp-context').value.trim();
   const hub = conds.length > 0 ? state.nodes.find(n=>n.hub&&n.conds[0]===conds[0]) : null;
@@ -3010,7 +3013,7 @@ function toggleContextHint(val) {
 // ═══════════════════════════════════════════════════════════
 async function addWithAIAnalysis() {
   const name = document.getElementById('inp-name').value.trim();
-  if (!name) { showToast('Escribe el nombre del síntoma primero'); return; }
+  if (!name) { showToast(lang==='es'?'Escribe el nombre del síntoma primero':'Enter a symptom name first'); return; }
   // First add as floating node
   const nodeId = 'n'+(state.idCounter++);
   const context = document.getElementById('inp-context').value.trim();
@@ -3027,20 +3030,22 @@ async function addWithAIAnalysis() {
   document.querySelectorAll('#add-checks input').forEach(c=>c.checked=false);
   renderNodeList(); draw();
 
-  showLoading(`Analizando origen de "${name}"...`);
+  showLoading(lang === 'es' ? `Analizando origen de "${name}"...` : `Analyzing origin of "${name}"...`);
 
-  const diagLabels = state.selectedDiags.map(d=>DIAG_MAP[d].label).join(', ');
+  const diagLabels = state.selectedDiags.map(d=>diagLabel(DIAG_MAP[d])).join(', ');
   const existingSymptoms = state.nodes
     .filter(n=>!n.hub && n.id!==nodeId)
     .map(n=>({ id:n.id, name:n.name, conds:n.conds }));
 
-  const prompt = `Eres un asistente de psicoeducación para personas con diagnósticos de salud mental.
+  const isEsAnalyze = lang === 'es';
+  const prompt = isEsAnalyze
+    ? `Eres un asistente de psicoeducación para personas con diagnósticos de salud mental.
 
 El usuario tiene los siguientes diagnósticos: ${diagLabels}.
 ${state.diagProfiles?.[state.selectedDiags[0]] ? `Perfil: ${JSON.stringify(state.diagProfiles)}` : ''}
 
 Síntomas actuales en su mapa:
-${existingSymptoms.map(s=>`- [${s.id}] "${s.name}"${s.context?` (aparece: ${s.context})`:''} (${s.conds.map(c=>DIAG_MAP[c]?.label||c).join(', ')||'sin diagnóstico'})`).join('\n')}
+${existingSymptoms.map(s=>`- [${s.id}] "${s.name}"${s.context?` (aparece: ${s.context})`:''} (${s.conds.map(c=>diagLabel(DIAG_MAP[c])||c).join(', ')||'sin diagnóstico'})`).join('\n')}
 
 El usuario acaba de agregar: "${name}"${node.context ? `\nContexto que dio: "${node.context}"` : ''}
 
@@ -3058,7 +3063,32 @@ Responde SOLO con JSON válido, sin texto extra:
 - diagConds: diagnósticos del usuario que podrían explicar directamente "${name}". Puede ser array vacío.
 - Si no hay relación clara, devuelve causeIds:[], diagConds:[], confidence:"desconocido"
 - IDs disponibles: ${existingSymptoms.map(s=>s.id).join(', ')}
-- Diagnósticos disponibles: ${state.selectedDiags.join(', ')}`;
+- Diagnósticos disponibles: ${state.selectedDiags.join(', ')}`
+    : `You are a psychoeducation assistant for people with mental health diagnoses.
+
+The user has the following diagnoses: ${diagLabels}.
+${state.diagProfiles?.[state.selectedDiags[0]] ? `Profile: ${JSON.stringify(state.diagProfiles)}` : ''}
+
+Current symptoms on their map:
+${existingSymptoms.map(s=>`- [${s.id}] "${s.name}"${s.context?` (appears: ${s.context})`:''} (${s.conds.map(c=>diagLabel(DIAG_MAP[c])||c).join(', ')||'no diagnosis'})`).join('\n')}
+
+The user just added: "${name}"${node.context ? `\nContext provided: "${node.context}"` : ''}
+
+Your task: analyze whether "${name}" could be a CONSEQUENCE of any symptom or diagnosis already on the map, and whether the user's diagnoses can explain it.
+
+Respond ONLY with valid JSON, no extra text:
+{
+  "analysis": "one or two sentences explaining the likely origin of this symptom in the context of this profile",
+  "causeIds": ["id1","id2"],
+  "diagConds": ["tda","cptsd"],
+  "confidence": "alta|media|baja|desconocido"
+}
+
+- causeIds: IDs of map symptoms that cause or contribute to "${name}". Can be empty array.
+- diagConds: user's diagnoses that could directly explain "${name}". Can be empty array.
+- If no clear connection, return causeIds:[], diagConds:[], confidence:"desconocido"
+- Available IDs: ${existingSymptoms.map(s=>s.id).join(', ')}
+- Available diagnoses: ${state.selectedDiags.join(', ')}`;
 
   try {
     const res = await fetch('/api/claude', {
@@ -3101,8 +3131,10 @@ Responde SOLO con JSON válido, sin texto extra:
     if (parsed.confidence === 'desconocido' || (!parsed.causeIds?.length && !parsed.diagConds?.length)) {
       document.getElementById('rp-therapist-notice').style.display = 'block';
     }
-    const confLabel = { alta:'alta', media:'media', baja:'baja', desconocido:'incierto' }[parsed.confidence] || '';
-    showToast(`Origen analizado — confianza ${confLabel}`);
+    const confLabel = lang==='es'
+      ? { alta:'alta', media:'media', baja:'baja', desconocido:'incierto' }[parsed.confidence] || ''
+      : { alta:'high', media:'medium', baja:'low', desconocido:'unknown' }[parsed.confidence] || '';
+    showToast(lang==='es' ? `Origen analizado — confianza ${confLabel}` : `Origin analyzed — confidence: ${confLabel}`);
   } catch(err) {
     hideLoading();
     showToast('Error al analizar: ' + err.message);
@@ -3115,7 +3147,7 @@ function renderNodeList() {
   const countEl = document.getElementById('acc-list-count');
   if (countEl) countEl.textContent = syms.length > 0 ? syms.length : '';
   if (syms.length === 0) {
-    el.innerHTML = '<p style="font-family:\'DM Mono\',monospace;font-size:0.62rem;color:var(--light);text-align:center;padding:16px">sin síntomas aún</p>';
+    el.innerHTML = '<p style="font-family:\'DM Mono\',monospace;font-size:0.62rem;color:var(--light);text-align:center;padding:16px">${lang==='es'?'sin síntomas aún':'no symptoms yet'}</p>`;
     return;
   }
   el.innerHTML = syms.map(n=>`
@@ -3132,7 +3164,7 @@ function renderNodeList() {
         ${n.notes?'<span style="font-size:0.55rem;color:var(--ai-glow)">●</span>':''}
         ${n.conds.map(c=>`<div class="dot-xs" style="background:${DIAG_MAP[c]?.color||'#888'}"></div>`).join('')}
       </div>
-      <button class="node-row-delete" onclick="event.stopPropagation();deleteNode('${n.id}')" title="Eliminar">×</button>
+      <button class="node-row-delete" onclick="event.stopPropagation();deleteNode('${n.id}')" title="${lang==='es'?'Eliminar':'Delete'}">×</button>
     </div>
   `).join('');
 }
@@ -3141,13 +3173,13 @@ function renderNodeList() {
 // AI GENERATION
 // ═══════════════════════════════════════════════════════════
 async function generateWithAI() {
-  if (state.selectedDiags.length === 0) { showToast('Selecciona al menos un diagnóstico'); return; }
+  if (state.selectedDiags.length === 0) { showToast(lang==='es'?'Selecciona al menos un diagnóstico':'Select at least one diagnosis'); return; }
 
-  showLoading('Consultando IA...');
+  showLoading(lang === 'es' ? 'Consultando IA...' : 'Consulting AI...');
 
-  const diagLabels = state.selectedDiags.map(d=>DIAG_MAP[d].label).join(', ');
+  const diagLabels = state.selectedDiags.map(d=>diagLabel(DIAG_MAP[d])).join(', ');
   const existingSymptoms = state.nodes.filter(n=>!n.hub);
-  const existingNames = existingSymptoms.map(n=>n.name+(n.context?` (aparece: ${n.context})`:''));
+  const existingNames = existingSymptoms.map(n=>n.name+(n.context?` (${lang==='es'?'aparece':'appears'}: ${n.context})`:''));
 
   // Build rich profile context
   const profileContext = state.selectedDiags.map(id => {
@@ -3155,14 +3187,16 @@ async function generateWithAI() {
     if (!p) return null;
     const diag = DIAG_MAP[id];
     const parts = [];
-    if (p.subtype?.length)  parts.push(`subtipo/patrón: ${Array.isArray(p.subtype)?p.subtype.join(', '):p.subtype}`);
-    if (p.age)              parts.push(`diagnosticado a los ${p.age} años`);
-    if (p.triggers?.length) parts.push(`detonadores: ${Array.isArray(p.triggers)?p.triggers.join(', '):p.triggers}`);
-    if (p.known)            parts.push(`síntomas conocidos propios: ${p.known}`);
+    if (p.subtype?.length)  parts.push(lang==='es' ? `subtipo/patrón: ${Array.isArray(p.subtype)?p.subtype.join(', '):p.subtype}` : `subtype/pattern: ${Array.isArray(p.subtype)?p.subtype.join(', '):p.subtype}`);
+    if (p.age)              parts.push(lang==='es' ? `diagnosticado a los ${p.age} años` : `diagnosed at age ${p.age}`);
+    if (p.triggers?.length) parts.push(lang==='es' ? `detonadores: ${Array.isArray(p.triggers)?p.triggers.join(', '):p.triggers}` : `triggers: ${Array.isArray(p.triggers)?p.triggers.join(', '):p.triggers}`);
+    if (p.known)            parts.push(lang==='es' ? `síntomas conocidos propios: ${p.known}` : `known personal symptoms: ${p.known}`);
     return parts.length ? `${diag.label}: ${parts.join(' | ')}` : null;
   }).filter(Boolean).join('\n');
 
-  const prompt = `Eres un asistente de psicoeducación para personas que YA tienen diagnósticos de salud mental confirmados por profesionales.
+  const isEsGen = lang === 'es';
+  const prompt = isEsGen
+    ? `Eres un asistente de psicoeducación para personas que YA tienen diagnósticos de salud mental confirmados por profesionales.
 
 PERFIL DEL USUARIO:
 Diagnósticos: ${diagLabels}.
@@ -3171,7 +3205,7 @@ ${profileContext ? `\nInformación específica por diagnóstico:\n${profileConte
 Síntomas que ya tiene en su mapa:
 ${existingNames.length ? existingNames.map(n=>`- ${n}`).join('\n') : '- ninguno aún'}
 
-Tu tarea: sugerir 8-12 síntomas o experiencias relevantes para ESTE perfil diagnóstico específico. 
+Tu tarea: sugerir 8-12 síntomas o experiencias relevantes para ESTE perfil diagnóstico específico.
 - Enfócate en los puntos de intersección entre sus diagnósticos.
 - Usa la información de perfil (subtipo, detonadores, síntomas conocidos) para ser preciso.
 - NO repitas síntomas que ya existen en el mapa.
@@ -3191,7 +3225,37 @@ Responde SOLO con JSON válido, sin texto adicional:
 IDs válidos: ${state.selectedDiags.join(', ')}.
 Cada síntoma debe tener 1-3 condiciones.
 Usa lenguaje de primera persona, no patologizante.
-Enfócate en experiencias reales: emocionales, cognitivas, corporales, relacionales.`;
+Enfócate en experiencias reales: emocionales, cognitivas, corporales, relacionales.`
+    : `You are a psychoeducation assistant for people who ALREADY have mental health diagnoses confirmed by professionals.
+
+USER PROFILE:
+Diagnoses: ${diagLabels}.
+${profileContext ? `\nDiagnosis-specific information:\n${profileContext}` : ''}
+
+Symptoms already on their map:
+${existingNames.length ? existingNames.map(n=>`- ${n}`).join('\n') : '- none yet'}
+
+Your task: suggest 8-12 symptoms or experiences relevant to THIS specific diagnostic profile.
+- Focus on intersection points between their diagnoses.
+- Use the profile information (subtype, triggers, known symptoms) to be precise.
+- Do NOT repeat symptoms already on the map.
+- If the profile indicates a specific subtype (e.g. binge-type AN, not restrictive), adjust suggestions accordingly.
+
+Respond ONLY with valid JSON, no additional text:
+{
+  "symptoms": [
+    {
+      "name": "short name (max 4 words)",
+      "conds": ["id1","id2"],
+      "reason": "short phrase explaining why it appears in this specific profile"
+    }
+  ]
+}
+
+Valid IDs: ${state.selectedDiags.join(', ')}.
+Each symptom must have 1-3 conditions.
+Use first-person, non-pathologizing language.
+Focus on real experiences: emotional, cognitive, physical, relational.`;
 
   try {
     const res = await fetch('/api/claude', {
@@ -3235,7 +3299,7 @@ Enfócate en experiencias reales: emocionales, cognitivas, corporales, relaciona
 // ═══════════════════════════════════════════════════════════
 function showReviewPanel() {
   const el = document.getElementById('review-list');
-  if (pendingSuggestions.length === 0) { showToast('No hay sugerencias nuevas'); return; }
+  if (pendingSuggestions.length === 0) { showToast(lang==='es'?'No hay sugerencias nuevas':'No new suggestions'); return; }
   el.innerHTML = pendingSuggestions.map((s,i) => {
     const tags = s.conds.map(c=>{
       const d=DIAG_MAP[c]; if(!d) return '';
@@ -3247,8 +3311,8 @@ function showReviewPanel() {
       <div class="suggest-reason">${s.reason}</div>
       <div class="suggest-conds">${tags}</div>
       <div class="suggest-actions">
-        <button class="btn-accept" onclick="acceptSuggestion(${i})">✓ Aceptar</button>
-        <button class="btn-reject" onclick="rejectSuggestion(${i})">✗ Rechazar</button>
+        <button class="btn-accept" onclick="acceptSuggestion(${i})">${lang==='es'?'✓ Aceptar':'✓ Accept'}</button>
+        <button class="btn-reject" onclick="rejectSuggestion(${i})">${lang==='es'?'✗ Rechazar':'✗ Reject'}</button>
       </div>
     </div>`;
   }).join('');
@@ -3301,10 +3365,10 @@ function openApiModal() {
 function closeApiModal() { document.getElementById('apimodal').classList.remove('show'); }
 function saveApiKey() {
   const key = document.getElementById('api-input').value.trim();
-  if (!key.startsWith('sk-ant')) { showToast('Key inválida — debe empezar con sk-ant'); return; }
+  if (!key.startsWith('sk-ant')) { showToast(lang==='es'?'Key inválida — debe empezar con sk-ant':'Invalid key — must start with sk-ant'); return; }
   localStorage.setItem('sm_apikey', key);
   closeApiModal();
-  showToast('API key guardada');
+  showToast(lang==='es'?'API key guardada':'API key saved');
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -3792,6 +3856,16 @@ if (state.nodes.length > 0) {
   initLayout();
   draw();
 }
+
+// Exponer funciones del onboarding al window (necesario para onclick en HTML)
+window.setLang       = setLang;
+window.obNext        = obNext;
+window.obNext2       = obNext2;
+window.obBack        = obBack;
+window.obBack2       = obBack2;
+window.startApp      = startApp;
+window.updateNameBtn = updateNameBtn;
+window.toggleLegend  = toggleLegend;
 </script>
 </body>
 </html>
