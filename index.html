@@ -1932,8 +1932,6 @@ const DIAGNOSES = [
   { id:'anx',   label:'Ansiedad\nGeneralizada', labelEn:'Generalized\nAnxiety',  color:'#6aaa4a' },
 ];
 
-// Helper: label según idioma activo
-function diagLabel(d) { return (lang === 'en' && d.labelEn) ? d.labelEn : d.label; }
 
 const DIAG_MAP = Object.fromEntries(DIAGNOSES.map(d => [d.id, d]));
 const HUB_R  = 46;
@@ -3147,7 +3145,7 @@ function renderNodeList() {
   const countEl = document.getElementById('acc-list-count');
   if (countEl) countEl.textContent = syms.length > 0 ? syms.length : '';
   if (syms.length === 0) {
-    el.innerHTML = '<p style="font-family:\'DM Mono\',monospace;font-size:0.62rem;color:var(--light);text-align:center;padding:16px">${lang==='es'?'sin síntomas aún':'no symptoms yet'}</p>`;
+    el.innerHTML = `<p style="font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--light);text-align:center;padding:16px">${lang==='es'?'sin síntomas aún':'no symptoms yet'}</p>`;
     return;
   }
   el.innerHTML = syms.map(n=>`
@@ -3485,6 +3483,9 @@ const STRINGS = {
 
 let lang = state.lang || 'en';
 
+// Helper: label según idioma activo (debe ir después de `lang`)
+function diagLabel(d) { return (lang === 'en' && d.labelEn) ? d.labelEn : d.label; }
+
 function t(key) { return STRINGS[lang]?.[key] || STRINGS.en[key] || key; }
 
 function applyLang() {
@@ -3510,8 +3511,8 @@ function applyLang() {
   });
 
   // Accordion headers
-  const diagLabel = document.getElementById('acc-diags-label');
-  if (diagLabel) diagLabel.textContent = es ? 'Mis diagnósticos' : 'My diagnoses';
+  const diagLabelEl = document.getElementById('acc-diags-label');
+  if (diagLabelEl) diagLabelEl.textContent = es ? 'Mis diagnósticos' : 'My diagnoses';
   const addLabel = document.getElementById('acc-add-label');
   if (addLabel) addLabel.textContent = es ? 'Agregar síntoma' : 'Add symptom';
   const listLabel = document.getElementById('acc-list-label');
