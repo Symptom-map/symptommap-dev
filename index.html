@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SymptomMap</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap');
 
 :root {
   --bg:       #f5f2ec;
@@ -16,14 +16,14 @@
   --ink:      #1a1814;
   --muted:    #7a7060;
   --light:    #aaa090;
-  --tda:   #c0622a;
-  --tlp:   #3d7ab8;
-  --an:    #e05c3a;
-  --aut:   #1aabb0;
-  --cptsd: #7c6ab0;
-  --bi:    #d4953a;
-  --anx:   #6aaa4a;
-  --ai-glow: #1aabb0;
+  --tda:   #3b82f6;
+  --tlp:   #a855f7;
+  --an:    #fb7185;
+  --aut:   #10b981;
+  --cptsd: #f59e0b;
+  --bi:    #6366f1;
+  --anx:   #84cc16;
+  --ai-glow: #38b6ff;
   --glass: rgba(255,252,248,0.65);
   --glass-border: rgba(255,255,255,0.5);
   --shadow: 0 4px 24px rgba(0,0,0,0.08);
@@ -37,10 +37,10 @@
 
 body {
   background: var(--bg);
-  background-image: radial-gradient(ellipse at 20% 20%, rgba(192,98,42,0.06) 0%, transparent 50%),
-                    radial-gradient(ellipse at 80% 80%, rgba(61,122,184,0.06) 0%, transparent 50%);
+  background-image: radial-gradient(ellipse at 20% 20%, rgba(56,182,255,0.04) 0%, transparent 50%),
+                    radial-gradient(ellipse at 80% 80%, rgba(157,80,187,0.04) 0%, transparent 50%);
   color: var(--ink);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Outfit', sans-serif;
   height: 100vh;
   overflow: hidden;
   display: flex;
@@ -156,7 +156,7 @@ body {
 .diag-item.active .diag-swatch { opacity: 1; }
 
 .diag-name {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 0.8rem;
   font-weight: 400;
   color: var(--muted);
@@ -168,11 +168,11 @@ body {
 .btn-generate {
   width: 100%;
   padding: 10px;
-  background: var(--ink);
-  color: #f5f2ec;
+  background: linear-gradient(135deg, #38b6ff 0%, #9d50bb 100%);
+  color: #ffffff;
   border: none;
   border-radius: var(--radius-btn);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
@@ -212,7 +212,7 @@ input[type="text"], input[type="number"], textarea {
   border: 1px solid var(--border);
   color: var(--ink);
   padding: 8px 12px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 0.82rem;
   border-radius: var(--radius-sm);
   outline: none;
@@ -252,7 +252,7 @@ textarea { resize: none; height: 70px; line-height: 1.5; }
   background: transparent;
   border: 1.5px solid var(--border-solid);
   color: var(--muted);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 0.8rem;
   font-weight: 500;
   border-radius: var(--radius-btn);
@@ -283,10 +283,10 @@ textarea { resize: none; height: 70px; line-height: 1.5; }
 }
 .node-row:hover { background: var(--surface2); border-color: var(--border); }
 .node-row.selected { background: rgba(255,252,248,0.9); border-color: var(--ink); }
-.node-row.multi-selected { background: rgba(61,122,184,0.08); border-color: #3d7ab8; }
+.node-row.multi-selected { background: rgba(61,122,184,0.08); border-color: #3b82f6; }
 
 .node-row-bar { width: 3px; min-height: 18px; border-radius: 2px; flex-shrink: 0; align-self: stretch; }
-.node-row-name { font-size: 0.8rem; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 400; flex: 1; line-height: 1.4; }
+.node-row-name { font-size: 0.8rem; font-family: 'Outfit', sans-serif; font-weight: 400; flex: 1; line-height: 1.4; }
 .node-row-dots { display: flex; gap: 2px; flex-shrink: 0; align-items: center; }
 .dot-xs { width: 5px; height: 5px; border-radius: 50%; }
 .ai-dot { font-size: 0.55rem; color: var(--ai-glow); }
@@ -394,7 +394,7 @@ canvas { position: absolute; top: 0; left: 0; cursor: default; }
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 9px 12px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 0.82rem;
   color: var(--ink);
   resize: none;
@@ -410,7 +410,7 @@ canvas { position: absolute; top: 0; left: 0; cursor: default; }
   flex: 1; padding: 9px;
   background: var(--ink); color: #f5f2ec;
   border: none; border-radius: var(--radius-btn);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 0.78rem; font-weight: 600;
   cursor: pointer; transition: all 0.15s;
 }
@@ -422,7 +422,7 @@ canvas { position: absolute; top: 0; left: 0; cursor: default; }
   border: 1.5px solid var(--border-solid);
   color: var(--muted);
   border-radius: var(--radius-btn);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 0.78rem; font-weight: 500;
   cursor: pointer; transition: all 0.12s;
 }
@@ -496,9 +496,9 @@ canvas { position: absolute; top: 0; left: 0; cursor: default; }
 .modal-actions { display: flex; gap: 8px; }
 .btn-primary {
   flex: 1; padding: 10px;
-  background: var(--ink); color: #f5f2ec;
+  background: linear-gradient(135deg, #38b6ff 0%, #9d50bb 100%); color: #ffffff;
   border: none; border-radius: var(--radius-btn);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 0.82rem; font-weight: 600;
   cursor: pointer; transition: all 0.15s;
 }
@@ -509,7 +509,7 @@ canvas { position: absolute; top: 0; left: 0; cursor: default; }
   border: 1.5px solid var(--border-solid);
   color: var(--muted);
   border-radius: var(--radius-btn);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 0.82rem; font-weight: 500;
   cursor: pointer; transition: all 0.12s;
 }
@@ -730,7 +730,7 @@ canvas { position: absolute; top: 0; left: 0; cursor: default; }
   background: rgba(255,252,248,0.7);
   backdrop-filter: blur(8px);
   cursor: pointer; text-align: center; transition: all 0.15s;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Outfit', sans-serif;
 }
 .ob-lang-btn:hover { border-color: var(--ink); transform: translateY(-2px); box-shadow: var(--shadow); }
 .ob-lang-btn.selected {
@@ -793,7 +793,7 @@ canvas { position: absolute; top: 0; left: 0; cursor: default; }
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Outfit', sans-serif;
   height: 100vh;
   overflow: hidden;
   display: flex;
@@ -917,7 +917,7 @@ body {
 .diag-item.active .diag-swatch { opacity: 1; }
 
 .diag-name {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 0.72rem;
   font-weight: 400;
   color: var(--muted);
@@ -929,15 +929,15 @@ body {
 .btn-generate {
   width: 100%;
   padding: 9px;
-  background: var(--ink);
-  color: var(--bg);
+  background: linear-gradient(135deg, #38b6ff 0%, #9d50bb 100%);
+  color: white;
   border: none;
-  border-radius: 4px;
-  font-family: 'DM Mono', monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.05em;
+  border-radius: 20px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: opacity 0.15s;
+  transition: all 0.15s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1040,10 +1040,10 @@ textarea { resize: none; height: 70px; line-height: 1.5; }
 }
 .node-row:hover { background: var(--surface2); border-color: var(--border); }
 .node-row.selected { background: var(--bg); border-color: var(--ink); }
-.node-row.multi-selected { background: #eef4ff; border-color: #3d7ab8; }
+.node-row.multi-selected { background: #eef4ff; border-color: #3b82f6; }
 
 .node-row-bar { width: 3px; min-height: 18px; border-radius: 2px; flex-shrink: 0; align-self: stretch; }
-.node-row-name { font-size: 0.78rem; font-family: 'Poppins', sans-serif; font-weight: 400; flex: 1; line-height: 1.4; }
+.node-row-name { font-size: 0.78rem; font-family: 'Outfit', sans-serif; font-weight: 400; flex: 1; line-height: 1.4; }
 .node-row-dots { display: flex; gap: 2px; flex-shrink: 0; }
 .dot-xs { width: 5px; height: 5px; border-radius: 50%; }
 .ai-dot { font-size: 0.55rem; color: var(--ai-glow); font-family: 'DM Mono', monospace; }
@@ -1056,7 +1056,7 @@ textarea { resize: none; height: 70px; line-height: 1.5; }
   border: 1px solid #e8c96a;
   border-radius: 6px;
   font-size: 0.75rem;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Outfit', sans-serif;
   color: #7a6020;
   line-height: 1.5;
 }
@@ -1070,7 +1070,7 @@ textarea { resize: none; height: 70px; line-height: 1.5; }
   gap: 10px;
 }
 .multi-panel-title {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--ink);
@@ -1079,13 +1079,13 @@ textarea { resize: none; height: 70px; line-height: 1.5; }
   font-size: 0.72rem;
   color: var(--muted);
   line-height: 1.5;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Outfit', sans-serif;
 }
 .multi-analysis {
   font-size: 0.78rem;
   line-height: 1.6;
   color: var(--ink);
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Outfit', sans-serif;
   background: var(--surface2);
   border-radius: 5px;
   padding: 10px 12px;
@@ -1306,11 +1306,11 @@ canvas { position: absolute; top: 0; left: 0; cursor: default; }
 .modal-actions { display: flex; gap: 8px; }
 .btn-primary {
   flex: 1; padding: 8px;
-  background: var(--ink); color: var(--bg);
-  border: none; border-radius: 4px;
-  font-family: 'DM Mono', monospace;
-  font-size: 0.68rem; cursor: pointer;
-  transition: opacity 0.15s;
+  background: linear-gradient(135deg, #38b6ff 0%, #9d50bb 100%); color: white;
+  border: none; border-radius: 20px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem; font-weight: 600; cursor: pointer;
+  transition: all 0.15s;
 }
 .btn-primary:hover { opacity: 0.8; }
 .btn-secondary {
@@ -1441,7 +1441,7 @@ canvas { position: absolute; top: 0; left: 0; cursor: default; }
 .ob-box { width: 460px; max-width: 94vw; display: flex; flex-direction: column; gap: 0; }
 .ob-step { display: none; flex-direction: column; gap: 22px; }
 .ob-step.active { display: flex; }
-.ob-logo { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; font-family: 'Poppins', sans-serif; }
+.ob-logo { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; font-family: 'Outfit', sans-serif; }
 .ob-logo span { color: var(--ai-glow); }
 .ob-tagline { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
 .ob-disclaimer {
@@ -1458,7 +1458,7 @@ canvas { position: absolute; top: 0; left: 0; cursor: default; }
   border: 1px solid var(--border); border-radius: 6px;
   background: var(--surface); cursor: pointer;
   text-align: center; transition: all 0.15s;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Outfit', sans-serif;
 }
 .ob-lang-btn:hover { border-color: var(--ink); background: var(--bg); }
 .ob-lang-btn.selected {
@@ -1604,7 +1604,7 @@ canvas { position: absolute; top: 0; left: 0; cursor: default; }
     <!-- Step 1: Language selection -->
     <div class="ob-step active" id="ob-step-1">
       <div>
-        <div class="ob-logo">Symptom<span>Map</span></div>
+        <div class="ob-logo">Symptom<span style="background:linear-gradient(135deg,#38b6ff,#9d50bb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Map</span></div>
         <p class="ob-tagline" id="ob-tagline">
           A tool to map how your diagnoses connect through shared symptoms — not to diagnose, but to understand.
         </p>
@@ -1635,7 +1635,7 @@ canvas { position: absolute; top: 0; left: 0; cursor: default; }
     <!-- Step 2: Name + disclaimer -->
     <div class="ob-step" id="ob-step-2">
       <div>
-        <div class="ob-logo">Symptom<span>Map</span></div>
+        <div class="ob-logo">Symptom<span style="background:linear-gradient(135deg,#38b6ff,#9d50bb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Map</span></div>
         <p class="ob-tagline" id="ob-name-title">What should we call you?</p>
       </div>
       <div>
@@ -1657,7 +1657,7 @@ canvas { position: absolute; top: 0; left: 0; cursor: default; }
     <!-- Step 3: How it works -->
     <div class="ob-step" id="ob-step-3">
       <div>
-        <div class="ob-logo">Symptom<span>Map</span></div>
+        <div class="ob-logo">Symptom<span style="background:linear-gradient(135deg,#38b6ff,#9d50bb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Map</span></div>
         <p class="ob-tagline" id="ob-how-title">How it works</p>
       </div>
       <div style="display:flex;flex-direction:column;gap:12px">
@@ -1710,7 +1710,7 @@ canvas { position: absolute; top: 0; left: 0; cursor: default; }
 
 <!-- TOPBAR -->
 <div class="topbar">
-  <div class="logo">Symptom<span class="logo-dot">Map</span></div>
+  <div class="logo">Symptom<span class="logo-dot" style="background:linear-gradient(135deg,#38b6ff,#9d50bb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Map</span></div>
   <span id="map-name" style="font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted)"></span>
   <div class="topbar-sep"></div>
   <button class="btn-icon" title="Exportar imagen" onclick="exportMap()">↗</button>
@@ -1923,13 +1923,13 @@ canvas { position: absolute; top: 0; left: 0; cursor: default; }
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════
 const DIAGNOSES = [
-  { id:'tda',   label:'TDA\nTDAH',             labelEn:'ADHD',                  color:'#c0622a' },
-  { id:'tlp',   label:'TLP\nBorderline',        labelEn:'BPD\nBorderline',       color:'#3d7ab8' },
-  { id:'an',    label:'Anorexia\nNerviosa',     labelEn:'Anorexia\nNervosa',     color:'#e05c3a' },
-  { id:'aut',   label:'Autistic\nTraits',       labelEn:'Autistic\nTraits',      color:'#1aabb0' },
-  { id:'cptsd', label:'C-PTSD',                 labelEn:'C-PTSD',                color:'#7c6ab0' },
-  { id:'bi',    label:'Bipolar\nDisorder',      labelEn:'Bipolar\nDisorder',     color:'#d4953a' },
-  { id:'anx',   label:'Ansiedad\nGeneralizada', labelEn:'Generalized\nAnxiety',  color:'#6aaa4a' },
+  { id:'tda',   label:'TDA\nTDAH',             labelEn:'ADHD',                  color:'#3b82f6' },
+  { id:'tlp',   label:'TLP\nBorderline',        labelEn:'BPD\nBorderline',       color:'#a855f7' },
+  { id:'an',    label:'Anorexia\nNerviosa',     labelEn:'Anorexia\nNervosa',     color:'#fb7185' },
+  { id:'aut',   label:'Rasgos\nAutistas',       labelEn:'Autistic\nTraits',      color:'#10b981' },
+  { id:'cptsd', label:'C-PTSD',                 labelEn:'C-PTSD',                color:'#f59e0b' },
+  { id:'bi',    label:'Trastorno\nBipolar',     labelEn:'Bipolar\nDisorder',     color:'#6366f1' },
+  { id:'anx',   label:'Ansiedad\nGeneralizada', labelEn:'Generalized\nAnxiety',  color:'#84cc16' },
 ];
 
 
@@ -3706,7 +3706,7 @@ function startApp() {
 // ═══════════════════════════════════════════════════════════
 // CUSTOM DIAGNOSIS
 // ═══════════════════════════════════════════════════════════
-const CUSTOM_COLORS = ['#e05c3a','#3d7ab8','#1aabb0','#7c6ab0','#d4953a','#6aaa4a','#c0622a','#b84a8a','#2a8060','#7a3a20'];
+const CUSTOM_COLORS = ['#3b82f6','#a855f7','#fb7185','#10b981','#f59e0b','#6366f1','#84cc16','#38b6ff','#e879f9','#34d399'];
 let customColor = CUSTOM_COLORS[0];
 
 function openCustomModal() {
