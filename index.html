@@ -2586,7 +2586,7 @@ Respond in ${isEs ? 'Spanish' : 'English'}. Use warm, non-clinical language. Spe
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-6',
         max_tokens: 400,
         messages: [{ role:'user', content: prompt }]
       })
@@ -3095,7 +3095,7 @@ Respond ONLY with valid JSON, no extra text:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-6',
         max_tokens: 600,
         messages: [{ role:'user', content: prompt }]
       })
@@ -3262,7 +3262,7 @@ Focus on real experiences: emotional, cognitive, physical, relational.`;
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-6',
         max_tokens: 1500,
         messages: [{ role:'user', content: prompt }]
       })
@@ -3787,7 +3787,7 @@ Respond ONLY with valid JSON:
     const res = await fetch('/api/claude', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:800, messages:[{role:'user',content:prompt}] })
+      body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:800, messages:[{role:'user',content:prompt}] })
     });
     const data = await res.json();
     const text = data.content.map(b=>b.text||'').join('').trim().replace(/```json|```/g,'').trim();
@@ -3870,3 +3870,4 @@ window.toggleLegend  = toggleLegend;
 </script>
 </body>
 </html>
+
